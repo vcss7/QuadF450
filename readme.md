@@ -4,6 +4,11 @@
 
 ### PlatformIO Core
 
+More information about installing and configuring PlatformIO Core can be found
+on the [PlatformIO Installation Documentation](https://docs.platformio.org/en/latest/core/installation/index.html).
+
+Here's the TLDR:
+
 1. Install PlatformIO Core with script
 ```
 # download script
