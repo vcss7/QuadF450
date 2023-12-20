@@ -32,3 +32,14 @@ ln -s ~/.platformio/penv/bin/piodebuggdb ~/.local/bin/piodebuggdb
 curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
 ```
 
+## Usage
+
+To upload the firmware, connect the microcontroller and run:
+```
+# builds and uploads firmware for any enviornment in  platformio.ini file
+pio run --target upload
+
+# or, for only one enviornment in the file
+pio run -e teensy41 -t upload
+```
+
