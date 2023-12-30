@@ -1,27 +1,45 @@
 #include "Arduino.h"
 #include "Wire.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_BME280.h"
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
 #include "Adafruit_BME280.h"
+#include "Adafruit_SSD1306.h"
 
 // variables
-uint32_t led_pin = 13;
+const uint32_t LED_PIN = 13;
 
 /* uncomment precompiler definitions as needed */
-#define BNO055_ENABLED
-#define BME280_ENABLED
+#define UTC602602_ENABLED     // display
+//#define BNO055_ENABLED        // orienation
+//#define BME280_ENABLED        // press/humid/temp
 
-// sensor initialization
+// display initialization
+#ifdef UTC602602_ENABLED
+const uint32_t SCREEN_WIDTH = 128;
+const uint32_t SCREEN_HEIGHT = 32;
+const int8_t OLED_RESET = -1;
+const uint32_t SCREEN_ADDRESS = 0x3D;
+Adafruit_SSD1306 utc602602(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// utc function prototypes
+void init_utc602602();
+void draw_line();
+#endif
+
+// orientation sensor initialization
 #ifdef BNO055_ENABLED
 // bno variable declarations
 Adafruit_BNO055 bno055 = Adafruit_BNO055(55);
 imu::Quaternion quat;
 
-// bno functions declarations
+// bno function prototypes
 void init_bno055();
 bool read_bno055_data();
 #endif
 
+// press/humid/temp sensor initialization
 #ifdef BME280_ENABLED
 // bme variable declarations
 Adafruit_BME280 bme280 = Adafruit_BME280();
@@ -32,7 +50,7 @@ float pressure;
 float humidity;
 float altitude;
 
-// bme functions declarations
+// bme function prototypes
 void init_bme280();
 bool read_bme280_data();
 #endif
@@ -40,18 +58,25 @@ bool read_bme280_data();
 /***** setup *****/
 void setup()
 {
-    pinMode(led_pin, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
     Serial.begin(9600);
 
+#ifdef UTC602602_ENABLED
+    init_utc602602();
+#endif
 #ifdef BNO055_ENABLED
     init_bno055();
 #endif
+#ifdef BME280_ENABLED
+    init_bme280();
+#endif
+    delay(1000);
 }
 
 /***** loop *****/
 void loop()
 {
-    digitalWrite(led_pin, millis() % 1000 > 500 ? true : false);
+    digitalWrite(LED_PIN, millis() % 1000 > 500);
 
 #ifdef BNO055_ENABLED
     read_bno055_data();
@@ -62,6 +87,26 @@ void loop()
 }
 
 // functions 
+
+#ifdef UTC602602_ENABLED
+void init_utc602602()
+{
+    while(!utc602602.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+    {
+        Serial.print("UTC602602 Module not detected. Check your wiring or I2C ADDR!");
+        delay(1000);
+    }
+
+    utc602602.drawPixel(10, 10, SSD1306_WHITE);
+    utc602602.display();
+    delay(100);
+}
+
+void draw_line()
+{
+}
+#endif
+
 #ifdef BNO055_ENABLED
 void init_bno055()
 {
