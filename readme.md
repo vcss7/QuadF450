@@ -4,7 +4,7 @@
 
 |    Component      | Manufacturer | Model Name   | Comm Interface | Operating Voltage |
 |-------------------|--------------|--------------|----------------|-------------------|
-| Microcontrller    | Teensy       | 4.1          | Multi          | 3.3V              |
+| Microcontroller   | Teensy       | 4.1          | Multi          | 3.3V              |
 | Display           | UCTRONICS    | UTC-602602   | I2C            | 3.3V to 5V        |
 | Orientation       | Adafruit     | BNO055       | I2C            | 3.3V to 5V        |
 | Press/Humid/Temp  | Adafruit     | BME280       | I2C            | 3.3V to 5V        |
@@ -37,7 +37,7 @@ ln -s ~/.platformio/penv/bin/pio ~/.local/bin/pio
 ln -s ~/.platformio/penv/bin/piodebuggdb ~/.local/bin/piodebuggdb
 ```
 
-3. Add PlatformIO udev rules to allow PlatformIO access to devices
+3. Add PlatformIO device management rules to allow PlatformIO access to devices
 ```
 # this will do the thing
 curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
