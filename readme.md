@@ -45,6 +45,12 @@ curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/
 
 ## Usage
 
+Generate `compile_commands.json` to let clangd find header files
+```
+# generate compile_commands.json
+pio run -t compiledb
+```
+
 To upload the firmware, connect the microcontroller and run:
 ```
 # builds and uploads firmware for any enviornment in  platformio.ini file
