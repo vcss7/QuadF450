@@ -10,6 +10,9 @@
 // variables
 const uint32_t LED_PIN = 13;
 
+// functions prototypes
+void scanI2CBus();
+
 /* uncomment precompiler definitions as needed */
 #define UTC602602_ENABLED     // display
 //#define BNO055_ENABLED        // orienation
@@ -20,7 +23,7 @@ const uint32_t LED_PIN = 13;
 const uint32_t SCREEN_WIDTH = 128;
 const uint32_t SCREEN_HEIGHT = 32;
 const int8_t OLED_RESET = -1;
-const uint32_t SCREEN_ADDRESS = 0x3D;
+const uint32_t SCREEN_ADDRESS = 0x3C;
 Adafruit_SSD1306 utc602602(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // utc function prototypes
@@ -59,6 +62,7 @@ bool read_bme280_data();
 void setup()
 {
     pinMode(LED_PIN, OUTPUT);
+    Wire.begin();
     Serial.begin(9600);
 
 #ifdef UTC602602_ENABLED
@@ -71,6 +75,13 @@ void setup()
     init_bme280();
 #endif
     delay(1000);
+    utc602602.clearDisplay();
+    utc602602.setTextSize(1);
+    utc602602.setTextColor(WHITE);
+    utc602602.setCursor(0, 10);
+    utc602602.print("Finished Setup!");
+    utc602602.display();
+    delay(100);
 }
 
 /***** loop *****/
@@ -86,7 +97,36 @@ void loop()
 #endif
 }
 
+
 // functions 
+void scanI2CBus()
+{
+    byte error, address;
+
+    for(address = 1; address < 127; address++)
+    {
+        digitalWrite(LED_PIN, millis() % 200 > 100);
+        Wire.beginTransmission(address);
+        error = Wire.endTransmission();
+
+        if(error == 0)
+        {
+            Serial.print("Device found at Address 0x");
+        }
+        else
+        {
+            Serial.print("No Device at Address 0x");
+        }
+
+        if(address < 16)
+        {
+            Serial.print("0");
+        }
+        Serial.println(address, HEX);
+
+        delay(100);
+    }
+}
 
 #ifdef UTC602602_ENABLED
 void init_utc602602()
