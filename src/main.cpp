@@ -13,10 +13,10 @@
 void scanI2CBus();
 
 /* uncomment precompiler definitions as needed */
-#define UTC602602_ENABLED     // display
-//#define BNO055_ENABLED        // orienation
-//#define BME280_ENABLED        // press/humid/temp
-#define ULTIMATEGPS_ENABLED   // gps
+// #define UTC602602_ENABLED     // display
+// #define BNO055_ENABLED        // 9-axis orienation
+// #define BME280_ENABLED        // press/humid/temp
+// #define ULTIMATEGPS_ENABLED   // gps
 
 // display initialization
 #ifdef UTC602602_ENABLED
@@ -116,11 +116,13 @@ void loop()
 #ifdef ULTIMATEGPS_ENABLED
     if(Serial1.available())
     {
+#ifdef UTC602602_ENABLED
         utc602602.clearDisplay();
         utc602602.setTextSize(1);
         utc602602.setCursor(0, 0);
         utc602602.setTextColor(WHITE);
         utc602602.print("Serial1 available");
+#endif
     }
 #endif
 }
@@ -138,19 +140,9 @@ void scanI2CBus()
         error = Wire.endTransmission();
 
         if(error == 0)
-        {
-            Serial.print("Device found at Address 0x");
-        }
+            Serial.printf("Device found at Address 0x%02X\r\n", address);
         else
-        {
-            Serial.print("No Device at Address 0x");
-        }
-
-        if(address < 16)
-        {
-            Serial.print("0");
-        }
-        Serial.println(address, HEX);
+            Serial.printf("No Device at Address 0x%02X\r\n", address);
 
         delay(100);
     }
