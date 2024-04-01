@@ -59,10 +59,6 @@ bool init_bme280 ();
 bool read_bme280_data ();
 #endif
 
-// gps
-#ifdef ULTIMATEGPS_ENABLED  // device can take 63 bytes
-#endif
-
 /***** setup *****/
 void setup ()
 {
@@ -150,8 +146,8 @@ bool init_utc602602 ()
 {
     while (!utc602602.begin (SSD1306_SWITCHCAPVCC, UTC602602_ADDRESS))
     {
-        Serial.print (
-            "UTC602602 Module not detected. Check your wiring or I2C ADDR!");
+        Serial.printf ("UTC602602 Module not detected. Check your wiring or"
+                      + " I2C ADDR!\r\n");
         delay (1000);
     }
 
