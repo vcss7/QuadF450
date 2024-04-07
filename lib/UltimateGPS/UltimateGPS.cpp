@@ -1,5 +1,7 @@
 #include "UltimateGPS.h"
 
+#include <unity.h>
+
 /**
  * @brief Contrcutor to initialize the "device" without any connections.
  */
@@ -62,65 +64,120 @@ bool vcss::UltimateGPS::isRxHigh ()
 }
 
 /**
- * @brief Applies the xor checksum algorithm to a string.
+ * @brief Applies the checksum xor 8 algorithm to a string.
  *
- * @details The checksum is calculated by summing the result of applying xor to
- * each character between the first instance of '$' and the first instance of
+ * @details The checksum is calculated by summing the result of applying xor 8
+ * to each character between the first instance of '$' and the first instance of
  * '*' after the first instance of '$'.
  *
  * @param[in] string is the complete string to calculate the checksum of.
  *
- * @return the calculated xor checksum.
+ * @return the calculated xor checksum as a hexidecimal.
  */
-uint8_t vcss::UltimateGPS::calculateXorChecksum(const char *string)
+uint8_t vcss::UltimateGPS::calculateXorChecksum (const char *string)
 {
-    const char CHECKSUM_START_CHAR = '$';
-    const char CHECKSUM_END_CHAR   = '*';
-
-    uint8_t i = 0;
-
-    // search for index with start char of checksum
-    while (string[i] != CHECKSUM_START_CHAR)
-    {
-        i++;
-    }
+    uint8_t calculatedChecksum = 0;
 
     // calculate checksum
-    uint8_t calculatedXorChecksum = 0;
-    while (string[i] != CHECKSUM_END_CHAR)
+    uint8_t i = 0;
+    while (string[i] != '\0')
     {
-        // return false if string ends before calculation is done
-        if (string[i] == '\0')
-            return false;
-
-        calculatedXorChecksum ^= string[i];
+        calculatedChecksum ^= string[i];
         i++;
     }
 
-    return calculatedXorChecksum;
+    return calculatedChecksum;
 }
 
 /**
- * @brief Applies the xor checksum algorithm to a string.
+ * @brief Checks if a string has a valid xor checksum
  *
  * @details The checksum is calculated by summing the result of applying xor to
  * each character between the first instance of '$' and the first instance of
  * '*' after the first instance of '$'.
  *
  * @param[in] string is the complete string to check the checksum of.
- * @param[in] checksum is the expected value of the xor checksum algorithm.
  *
  * @return whether the checksum *checks* out ;)
  */
-bool vcss::UltimateGPS::hasValidChecksum (const char *string, const uint8_t checksum)
+bool vcss::UltimateGPS::hasValidXorChecksum (const char *string)
 {
-    if (strlen (string) > 128)
+    if (string == NULL || strlen (string) > 128 || strlen (string) < 2)
     {
         return false;
     }
 
-    // todo: get the checksum from the string
+    const char CHECKSUM_START_CHAR = '$';
+    const char CHECKSUM_END_CHAR   = '*';
 
-    return (calculateXorChecksum(string) == checksum);
+    uint8_t i, startCharIndex, endCharIndex = 0;
+
+    // search for index with start char of checksum
+    while (string[i] != CHECKSUM_START_CHAR)
+    {
+        if (string[i] == '\0')
+        {
+            return false;
+        }
+        i++;
+    }
+
+    // record index and move right one
+    startCharIndex = i++;
+
+    // continue and search for the index with end char of checksum
+    while (string[i] != CHECKSUM_END_CHAR)
+    {
+        if (string[i] == '\0')
+        {
+            return false;
+        }
+        i++;
+    }
+
+    // record index and move right one
+    endCharIndex = i++;
+
+    // get the expected checksum result
+    uint16_t expectedChecksum = 0;
+    while (string[i] != '\r')
+    {
+        if (string[i] == '\0')
+        {
+            return false;
+        }
+
+        char hexChar = string[i];
+
+        // convert from hexidecimal to digit and add it to expectedChecksum
+        uint8_t hexOnesDigit;
+        if (hexChar >= '0' && hexChar <= '9')
+        {
+            hexOnesDigit = (uint8_t) hexChar - '0';
+        }
+        else if (hexChar >= 'A' && hexChar <= 'F')
+        {
+            hexOnesDigit = (uint8_t) hexChar - 'A' + 10;
+        }
+
+        // shift bits to make space for the right most hex digit, then add it
+        expectedChecksum = expectedChecksum << 4 | hexOnesDigit;
+
+        i++;
+    }
+
+    // construct string to checksum
+    uint8_t checksumStringLength = endCharIndex - startCharIndex - 1;
+    char checksumString[checksumStringLength + 1];
+
+    for (uint8_t j = 0; j < checksumStringLength; j++)
+    {
+        // add one to string index to skip '$'
+        checksumString[j] = string[startCharIndex + 1 + j];
+    }
+
+    // terminate string with null
+    checksumString[checksumStringLength] = '\0';
+
+    return (expectedChecksum == calculateXorChecksum (checksumString));
 }
-

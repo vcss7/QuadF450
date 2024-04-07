@@ -64,7 +64,8 @@ void setup ()
 {
     pinMode (LED_BUILTIN, OUTPUT);
     Wire.begin ();
-    Serial1.begin (9600);
+    Serial.begin(115200);   // serial monitor
+    Serial1.begin (9600);   // gps serial
 
     bool bno055_initialized      = false;
     bool bme280_initialized      = false;

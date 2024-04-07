@@ -69,8 +69,8 @@ public:
     bool setGpsBaudRate (const uint32_t baudRate);
     uint8_t checkGpsAck (const uint32_t cmd, const uint32_t);
     void setNmeaOutput ();
-    uint8_t calculateXorChecksum(const char *string);
-    bool hasValidChecksum (const char *string, const uint8_t checksum);
+    uint8_t calculateXorChecksum (const char *string);
+    bool hasValidXorChecksum (const char *string);
 };
 
 }  // namespace vcss
