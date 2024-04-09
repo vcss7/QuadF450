@@ -33,23 +33,21 @@
 
 #include <Arduino.h>
 
-namespace vcss
-{
-
 const uint8_t TEENSY_HARDWARE_SERIAL_1_RX = 0;
 const uint8_t TEENSY_HARDWARE_SERIAL_1_TX = 1;
-
-enum AckCmdResponse
-{
-    INVALID     = 0,
-    UNSUPPORTED = 1,
-    FAILED      = 2,
-    SUCCESS     = 3
-};
 
 class UltimateGPS
 {
 private:
+    typedef enum AckCmdResponse
+    {
+        ERROR       = -1,  // Catch all error
+        INVALID     = 0,   // Invalid command
+        UNSUPPORTED = 1,   // Unsupported command
+        FAILED      = 2,   // Valid command, but execution failed
+        SUCCESS     = 3    // Valid command, and execution success
+    } AwkCmdResponse;
+
     HardwareSerial *gpsSerial = &SERIAL_PORT_HARDWARE;
     uint8_t rxPin             = TEENSY_HARDWARE_SERIAL_1_RX;
     uint8_t txPin             = TEENSY_HARDWARE_SERIAL_1_TX;
@@ -66,13 +64,11 @@ public:
     bool isRxHigh ();
 
     // pmkt functions
+    int8_t checkPkmtAwk (const char *command);
     bool setGpsBaudRate (const uint32_t baudRate);
-    uint8_t checkGpsAck (const uint32_t cmd, const uint32_t);
     void setNmeaOutput ();
     uint8_t calculateXorChecksum (const char *string);
     bool hasValidXorChecksum (const char *string);
 };
-
-}  // namespace vcss
 
 #endif

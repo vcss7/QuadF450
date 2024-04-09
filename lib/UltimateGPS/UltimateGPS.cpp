@@ -1,11 +1,9 @@
 #include "UltimateGPS.h"
 
-#include <unity.h>
-
 /**
  * @brief Contrcutor to initialize the "device" without any connections.
  */
-vcss::UltimateGPS::UltimateGPS ()
+UltimateGPS::UltimateGPS ()
 {
 }
 
@@ -13,9 +11,9 @@ vcss::UltimateGPS::UltimateGPS ()
  * @brief Constructor to initialize the "device" with a hardware serial
  * connection.
  *
- * @param hardwareSerial is the HardwareSerial the device is connected to.
+ * @param[in] hardwareSerial is the HardwareSerial the device is connected to.
  */
-vcss::UltimateGPS::UltimateGPS (HardwareSerial hardwareSerial)
+UltimateGPS::UltimateGPS (HardwareSerial hardwareSerial)
 {
     this->gpsSerial = &hardwareSerial;
 }
@@ -23,9 +21,9 @@ vcss::UltimateGPS::UltimateGPS (HardwareSerial hardwareSerial)
 /**
  * @brief Sets the HardwareSerial to use.
  *
- * @param hardwareSerial is the HardwareSerial the device is connected to.
+ * @param[in] hardwareSerial is the HardwareSerial the device is connected to.
  */
-void vcss::UltimateGPS::setHardwareSerial (HardwareSerial hardwareSerial)
+void UltimateGPS::setHardwareSerial (HardwareSerial hardwareSerial)
 {
     this->gpsSerial = &hardwareSerial;
 }
@@ -33,9 +31,9 @@ void vcss::UltimateGPS::setHardwareSerial (HardwareSerial hardwareSerial)
 /**
  * @brief Sets rxPin.
  *
- * @param rxPin is the uint8_t to set the rxPin to.
+ * @param[in] rxPin is the uint8_t to set the rxPin to.
  */
-void vcss::UltimateGPS::setRxPin (const uint8_t rxPin)
+void UltimateGPS::setRxPin (const uint8_t rxPin)
 {
     this->rxPin = rxPin;
 }
@@ -43,9 +41,9 @@ void vcss::UltimateGPS::setRxPin (const uint8_t rxPin)
 /**
  * @brief Sets txPin.
  *
- * @param txPin is the uint8_t to set the txPin to.
+ * @param[in] txPin is the uint8_t to set the txPin to.
  */
-void vcss::UltimateGPS::setTxPin (const uint8_t txPin)
+void UltimateGPS::setTxPin (const uint8_t txPin)
 {
     this->txPin = txPin;
 }
@@ -58,9 +56,75 @@ void vcss::UltimateGPS::setTxPin (const uint8_t txPin)
  *
  * @return If rx line is high.
  */
-bool vcss::UltimateGPS::isRxHigh ()
+bool UltimateGPS::isRxHigh ()
 {
     return digitalRead (this->rxPin);
+}
+
+/**
+ * @brief Checks the serial port for a valid PKMT command response.
+ *
+ * @param[in] command is the command string response from the gps device.
+ *
+ * @return The response we interpret from the string
+ */
+int8_t UltimateGPS::checkPkmtAwk (const char *command)
+{
+    if (command == NULL)
+    {
+        return AwkCmdResponse::ERROR;
+    }
+
+    int8_t cmdResponse;
+
+    size_t strLength = strlen (command);
+    for (size_t i = 0; i < strLength; i++)
+    {
+        if (command[i] != '\0')
+        {
+            return AwkCmdResponse::INVALID;
+        }
+        else if (command[i] == '*')
+        {
+            // the character before '*' is the command response
+            break;
+        }
+
+        cmdResponse = command[i];
+    }
+
+    switch (cmdResponse)
+    {
+        case AwkCmdResponse::INVALID:
+            cmdResponse = AwkCmdResponse::INVALID;
+            break;
+        case AwkCmdResponse::UNSUPPORTED:
+            cmdResponse = AwkCmdResponse::UNSUPPORTED;
+            break;
+        case AwkCmdResponse::FAILED:
+            cmdResponse = AwkCmdResponse::FAILED;
+            break;
+        case AwkCmdResponse::SUCCESS:
+            cmdResponse = AwkCmdResponse::SUCCESS;
+            break;
+        default:
+            cmdResponse = -1;
+    }
+
+    return cmdResponse;
+}
+
+/**
+ * @brief Sets the NMEA output frequency of the data fields.
+ *
+ * @details See page 12 of the PMTK_A11 document in doc/GPS/ under Packet Type:
+ * 314 PMTK_API_SET_NMEA_OUTPUT for more information.
+ */
+void UltimateGPS::setNmeaOutput ()
+{
+    const char *nmeaSetting
+        = "$PMTK314,1,1,1,1,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0*2C\r\n";
+    gpsSerial->print (nmeaSetting);
 }
 
 /**
@@ -74,7 +138,7 @@ bool vcss::UltimateGPS::isRxHigh ()
  *
  * @return the calculated xor checksum as a hexidecimal.
  */
-uint8_t vcss::UltimateGPS::calculateXorChecksum (const char *string)
+uint8_t UltimateGPS::calculateXorChecksum (const char *string)
 {
     uint8_t calculatedChecksum = 0;
 
@@ -100,7 +164,7 @@ uint8_t vcss::UltimateGPS::calculateXorChecksum (const char *string)
  *
  * @return whether the checksum *checks* out ;)
  */
-bool vcss::UltimateGPS::hasValidXorChecksum (const char *string)
+bool UltimateGPS::hasValidXorChecksum (const char *string)
 {
     if (string == NULL || strlen (string) > 128 || strlen (string) < 2)
     {
