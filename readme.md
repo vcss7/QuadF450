@@ -60,3 +60,44 @@ pio run --target upload
 pio run -e teensy41 -t upload
 ```
 
+## Contributions
+Before commiting to this repository, make sure the code being submitted complies
+with:
+    - MISRA 2012 coding guidelines
+    - Doxygen documentation standards
+
+### MISRA C 2012
+To comply with thos guidelines, `cppcheck` CLI tool can be used along with its
+`misra.py` addon. Here is a guide on how to use `cppcheck` to comply to MISRA C
+2012 coding style guidelines: (link)[https://deepwiki.com/danmar/cppcheck/6.1-misra-compliance-checking]
+
+Download `cppcheck`
+```
+# debian based linux distribution
+sudo apt install cppcheck
+
+# arch based linux distribution
+sudo pacman -S cppcheck
+```
+
+Find where the `misra.py` addon is located in the system
+```
+sudo find / -name "misra.py" 2>/dev/null
+```
+
+Create a `cppcheck` dump file
+```
+cppcheck --dump file.c
+```
+
+Run `cppcheck` with the `misra.py` addon
+```
+cppcheck --addon=/<path>/<to>/<cppcheck>/<addon>/misra.py file.c.dump
+```
+
+Obtain a copy of the `misra_c_2012.txt` text file which contains all rules
+outlined in the MISRA C 2012 coding guildlines for better output.
+
+### Doxygen Documentation Standard
+
+
