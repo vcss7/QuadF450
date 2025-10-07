@@ -4,3 +4,7 @@ compile_commands.json
 
 .vscode/
 
+misra.json
+misra_c_2012.txt
+misra_c_2023.txt
+
