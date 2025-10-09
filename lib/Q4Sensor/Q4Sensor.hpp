@@ -13,6 +13,8 @@ public:
     virtual void close () = 0;
     virtual void read ()  = 0;
     virtual void write () = 0;
+
+    virtual ~Sensor () = default;
 };
 
 }  // namespace Q4
