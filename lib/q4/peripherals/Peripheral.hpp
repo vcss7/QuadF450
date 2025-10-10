@@ -1,12 +1,15 @@
 /**
- * @file Q4Sensor.hpp
+ * @file Peripheral.hpp
+ * @brief Abstract interface for peripheral device operations.
  * @author Victor Solis
+ * @date 2025-10-09
+ * @version 1.0.0
  */
 
 namespace Q4
 {
 
-class Sensor
+class Peripheral
 {
 public:
     virtual void open ()  = 0;
@@ -14,7 +17,7 @@ public:
     virtual void read ()  = 0;
     virtual void write () = 0;
 
-    virtual ~Sensor () = default;
+    virtual ~Peripheral () = default;
 };
 
 }  // namespace Q4
