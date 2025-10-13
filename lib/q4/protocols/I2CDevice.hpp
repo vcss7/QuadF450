@@ -12,6 +12,7 @@
 #pragma once
 
 #include "../peripherals/Peripheral.hpp"
+
 #include <Wire.h>
 
 namespace Q4
@@ -70,7 +71,7 @@ protected:
     /**
      * @brief Default constructor to invoke the derived class's constructor.
      */
-    I2CDevice() = default;
+    I2CDevice () = default;
 
     /**
      * @brief Pointer to the TwoWire instance for I2C communication.
@@ -89,15 +90,14 @@ private:
      * initialize its base classes and the non-static members of the class of
      * which it is a member.
      */
-    I2CDevice(const I2CDevice&) = delete;
+    I2CDevice (const I2CDevice&) = delete;
 
     /**
      * @brief Delete copy assignment operator
      * @note MISRA C++ 2008 Rule 12-8-2: The copy assignment operator shall be
      * declared protected or private in an abstract class.
      */
-    I2CDevice& operator=(const I2CDevice&) = delete;
+    I2CDevice& operator= (const I2CDevice&) = delete;
 };
 
-}
-
+}  // namespace Q4
