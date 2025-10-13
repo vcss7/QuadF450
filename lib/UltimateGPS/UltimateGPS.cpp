@@ -72,7 +72,7 @@ bool vcss::UltimateGPS::isRxHigh ()
  *
  * @return the calculated xor checksum.
  */
-uint8_t vcss::UltimateGPS::calculateXorChecksum(const char *string)
+uint8_t vcss::UltimateGPS::calculateXorChecksum (const char *string)
 {
     const char CHECKSUM_START_CHAR = '$';
     const char CHECKSUM_END_CHAR   = '*';
@@ -112,7 +112,8 @@ uint8_t vcss::UltimateGPS::calculateXorChecksum(const char *string)
  *
  * @return whether the checksum *checks* out ;)
  */
-bool vcss::UltimateGPS::hasValidChecksum (const char *string, const uint8_t checksum)
+bool vcss::UltimateGPS::hasValidChecksum (const char *string,
+                                          const uint8_t checksum)
 {
     if (strlen (string) > 128)
     {
@@ -121,6 +122,5 @@ bool vcss::UltimateGPS::hasValidChecksum (const char *string, const uint8_t chec
 
     // todo: get the checksum from the string
 
-    return (calculateXorChecksum(string) == checksum);
+    return (calculateXorChecksum (string) == checksum);
 }
-

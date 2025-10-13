@@ -12,7 +12,7 @@
  *
  * @details
  * Contains hardware abstraction interfaces and device drivers useful for a
- * quadcopter. The interfaces in this namespace provide a consistent interface 
+ * quadcopter. The interfaces in this namespace provide a consistent interface
  * for all peripherals.
  */
 namespace Q4

@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace Q4
 {
@@ -38,7 +38,7 @@ public:
      * @brief Used for preparing and intializing a port to a peripheral device.
      * @return ReturnCode
      */
-    virtual ReturnCode open ()  = 0;
+    virtual ReturnCode open () = 0;
 
     /**
      * @brief Used for closing and deinitializing a port to a peripheral device.
@@ -52,7 +52,7 @@ public:
      * @param length The number of bytes to read.
      * @return ReturnCode
      */
-    virtual ReturnCode read (uint8_t* buffer, size_t length)  = 0;
+    virtual ReturnCode read (uint8_t* buffer, size_t length) = 0;
 
     /**
      * @brief Used to write to a peripheral device.
@@ -71,7 +71,7 @@ protected:
     /**
      * @brief Defualt contructor to invoke the derived class's constructor.
      */
-    Peripheral() = default;
+    Peripheral () = default;
 
 private:
     /**
@@ -80,14 +80,14 @@ private:
      * initialize its base classes and the non-static members of the class of
      * which it is a member.
      */
-    Peripheral(const Peripheral&) = delete; 
+    Peripheral (const Peripheral&) = delete;
 
     /**
      * @brief Delete copy assignment operator
      * @note MISRA C++ 2008 Rule 12-8-2: The copy assignment operator shall be
      * declared protected or private in an abstract class.
      */
-    Peripheral& operator=(const Peripheral&) = delete;
+    Peripheral& operator= (const Peripheral&) = delete;
 };
 
 }  // namespace Q4

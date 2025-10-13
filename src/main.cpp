@@ -3,14 +3,13 @@
 // functions prototypes
 
 // setup
-void setup()
+void setup ()
 {
 }
 
 // loop
-void loop()
+void loop ()
 {
 }
 
 // functions definitions
-
