@@ -32,6 +32,7 @@ public:
         Success = 0,
         Error   = 1,
         Timeout = 2,
+        Unknown = 3,
     };
 
     /**
