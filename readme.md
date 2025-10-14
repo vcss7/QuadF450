@@ -10,7 +10,7 @@
 | Press/Humid/Temp  | Adafruit     | BME280       | I2C            | 3.3V to 5V        |
 | GPS               | Adafruit     | Ultimate GPS | UART           | 3.3V to 5V        |
 | Camera            | Omnivision   | OV2640       | SCCB           | 1.7V to 3V        |
-| Battery Monitor   | TBH          | TBH          | TBH            | TBH               |
+| Battery Monitor   | TBD          | TBD          | TBD            | TBD               |
 | Brushless Motor   | YoungRC      | A2212 1000KV | PWM            | 11.1V             |
 | Buzzer            | Yuexin       | YXDZ         | Digital Signal | 3V                |
 | RF Transceiver    | Amiccom      | A7105        | SPI            | 2V to 3.6V        |
