@@ -14,6 +14,8 @@
 #include "../peripherals/Peripheral.hpp"
 
 #include <Wire.h>
+#include <FreeRTOS.h>
+#include <semphr.h>
 
 namespace Q4
 {
@@ -82,6 +84,11 @@ protected:
      * @brief Configuration parameters for I2C communication.
      */
     I2CConfig _config;
+
+    /**
+     * @brief A mutex task handle for managing access to the TwoWire resource.
+     */
+    SemaphoreHandle_t _mutex = NULL;
 
 private:
     /**
