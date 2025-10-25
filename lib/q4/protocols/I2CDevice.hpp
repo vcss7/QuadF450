@@ -13,8 +13,8 @@
 
 #include "../peripherals/Peripheral.hpp"
 
-#include <Wire.h>
 #include <FreeRTOS.h>
+#include <Wire.h>
 #include <semphr.h>
 
 namespace Q4
@@ -27,18 +27,11 @@ namespace Q4
 class I2CDevice : public Peripheral
 {
 public:
-    /**
-     * @struct I2CConfig
-     * @brief Configuration parameters for I2C communication.
+    /*
+     * @brief Construct the I2CDevice object with desired initializations
      */
-    struct I2CConfig
-    {
-        uint32_t frequency;
-        uint8_t address;
-        uint8_t sdaPin;
-        uint8_t sclPin;
-        uint16_t timeoutMs;
-    };
+    I2CDevice (TwoWire* wire, uint32_t freq, uint8_t addr, uint8_t sdaPin,
+               uint8_t sclPin, uint16_t timeoutMs);
 
     /**
      * @brief Initializes and sets I2C configurations to communicate with
@@ -81,11 +74,6 @@ protected:
     TwoWire* _wire;
 
     /**
-     * @brief Configuration parameters for I2C communication.
-     */
-    I2CConfig _config;
-
-    /**
      * @brief A mutex task handle for managing access to the TwoWire resource.
      */
     SemaphoreHandle_t _mutex = NULL;
@@ -105,6 +93,32 @@ private:
      * declared protected or private in an abstract class.
      */
     I2CDevice& operator= (const I2CDevice&) = delete;
+
+    /*
+     * @brief The frequncy of the clock pin for the I2C bus
+     */
+    uint32_t _freq;
+
+    /*
+     * @beief The I2C address of the I2C device
+     */
+    uint8_t _addr;
+
+    /*
+     * @brief The I2C data pin
+     */
+    uint8_t _sdaPin;
+
+    /*
+     * @brief The I2C clock pin
+     */
+    uint8_t _sclPin;
+
+    /*
+     * @brief The maximum amount of milliseconds to wait for communication for
+     * this device.
+     */
+    uint16_t _timeoutMs;
 };
 
 }  // namespace Q4
