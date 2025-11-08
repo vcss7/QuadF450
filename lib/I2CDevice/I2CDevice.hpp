@@ -11,8 +11,7 @@
 
 #pragma once
 
-#include "../peripherals/Peripheral.hpp"
-
+#include "Peripheral.hpp"
 #include <FreeRTOS.h>
 #include <Wire.h>
 #include <semphr.h>
