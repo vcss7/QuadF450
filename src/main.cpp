@@ -1,15 +1,29 @@
 #include <Arduino.h>
 
-// functions prototypes
+// function prototypes
+void initLed ();
+void blinkLed ();
 
 // setup
 void setup ()
 {
+	initLed ();
 }
 
 // loop
 void loop ()
 {
+	blinkLed ();
 }
 
-// functions definitions
+// function definitions
+void initLed ()
+{
+	pinMode (LED_BUILTIN, OUTPUT);
+}
+
+void blinkLed ()
+{
+	static const uint16_t INTERVAL_MS = 1000;
+	digitalWrite (LED_BUILTIN, millis () % (INTERVAL_MS * 2) > INTERVAL_MS);
+}
