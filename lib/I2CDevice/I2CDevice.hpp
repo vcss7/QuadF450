@@ -12,6 +12,7 @@
 #pragma once
 
 #include "Peripheral.hpp"
+
 #include <FreeRTOS.h>
 #include <Wire.h>
 #include <semphr.h>
@@ -29,8 +30,9 @@ public:
     /*
      * @brief Construct the I2CDevice object with desired initializations
      */
-    I2CDevice (TwoWire* wire, uint32_t freq, uint8_t addr, uint8_t sdaPin,
-               uint8_t sclPin, uint16_t timeoutMs);
+    I2CDevice (TwoWire* wire, SemaphoreHandle_t* mutex, uint32_t freq,
+               uint8_t addr, uint8_t sdaPin, uint8_t sclPin,
+               uint16_t timeoutMs);
 
     /**
      * @brief Initializes and sets I2C configurations to communicate with
@@ -75,7 +77,7 @@ protected:
     /**
      * @brief A mutex task handle for managing access to the TwoWire resource.
      */
-    SemaphoreHandle_t _mutex = NULL;
+    SemaphoreHandle_t* _mutex = NULL; 
 
 private:
     /**
