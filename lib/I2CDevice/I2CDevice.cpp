@@ -20,90 +20,90 @@ I2CDevice::I2CDevice (TwoWire* wire, SemaphoreHandle_t* mutex, uint32_t freq,
     _sdaPin    = sdaPin;
     _sclPin    = sclPin;
     _timeoutMs = timeoutMs;
-	_mutex     = mutex;
+    _mutex     = mutex;
 }
 
 I2CDevice::ReturnCode I2CDevice::open ()
 {
-	if (*_mutex == NULL || _wire == NULL)
-	{
-		abort ();
-	}
-	
-	if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
-	{
-		return Q4::I2CDevice::ReturnCode::Timeout;
-	}
+    if (*_mutex == NULL || _wire == NULL)
+    {
+        abort ();
+    }
 
-	// configure i2c bus
-	_wire->end ();
-	_wire->setClock (_freq);
-	_wire->setSDA (_sdaPin);
-	_wire->setSCL (_sclPin);
-	_wire->begin ();
+    if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
+    {
+        return Q4::I2CDevice::ReturnCode::Timeout;
+    }
 
-	xSemaphoreGive (*_mutex);
+    // configure i2c bus
+    _wire->end ();
+    _wire->setClock (_freq);
+    _wire->setSDA (_sdaPin);
+    _wire->setSCL (_sclPin);
+    _wire->begin ();
+
+    xSemaphoreGive (*_mutex);
 
     return Q4::I2CDevice::ReturnCode::Success;
 }
 
 I2CDevice::ReturnCode I2CDevice::close ()
 {
-	if (*_mutex == NULL || _wire == NULL)
-	{
-		abort ();
-	}
+    if (*_mutex == NULL || _wire == NULL)
+    {
+        abort ();
+    }
 
-	if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
-	{
-		return Q4::I2CDevice::ReturnCode::Timeout;
-	}
+    if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
+    {
+        return Q4::I2CDevice::ReturnCode::Timeout;
+    }
 
-	xSemaphoreGive (*_mutex);
+    xSemaphoreGive (*_mutex);
 
     return Q4::I2CDevice::ReturnCode::Success;
 }
 
 I2CDevice::ReturnCode I2CDevice::read (uint8_t* buffer, size_t length)
 {
-	if (*_mutex == NULL || _wire == NULL)
-	{
-		abort ();
-	}
+    if (*_mutex == NULL || _wire == NULL)
+    {
+        abort ();
+    }
 
-	if (buffer == NULL || length == 0)
-	{
-		return Q4::I2CDevice::ReturnCode::Error;
-	}
+    if (buffer == NULL || length == 0)
+    {
+        return Q4::I2CDevice::ReturnCode::Error;
+    }
 
-	if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
-	{
-		return Q4::I2CDevice::ReturnCode::Timeout;
-	}
+    if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
+    {
+        return Q4::I2CDevice::ReturnCode::Timeout;
+    }
 
-	xSemaphoreGive (*_mutex);
+    xSemaphoreGive (*_mutex);
 
     return Q4::I2CDevice::ReturnCode::Success;
 }
 
 I2CDevice::ReturnCode I2CDevice::write (const uint8_t* buffer, size_t length)
 {
-	if (*_mutex == NULL || _wire == NULL)
-	{
-		abort ();
-	}
+    if (*_mutex == NULL || _wire == NULL)
+    {
+        abort ();
+    }
 
-	if (buffer == NULL || length == 0)
-	{
-		return Q4::I2CDevice::ReturnCode::Error;
-	}
+    if (buffer == NULL || length == 0)
+    {
+        return Q4::I2CDevice::ReturnCode::Error;
+    }
 
-	if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
-	{
-		return Q4::I2CDevice::ReturnCode::Timeout;
-	}
+    if (xSemaphoreTake (*_mutex, (TickType_t) 10) == pdFALSE)
+    {
+        return Q4::I2CDevice::ReturnCode::Timeout;
+    }
 
-	xSemaphoreGive (*_mutex);
+    xSemaphoreGive (*_mutex);
 
     return Q4::I2CDevice::ReturnCode::Success;
 }

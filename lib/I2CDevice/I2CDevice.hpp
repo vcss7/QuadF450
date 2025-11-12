@@ -77,7 +77,7 @@ protected:
     /**
      * @brief A mutex task handle for managing access to the TwoWire resource.
      */
-    SemaphoreHandle_t* _mutex = NULL; 
+    SemaphoreHandle_t* _mutex = NULL;
 
 private:
     /**
