@@ -25,7 +25,7 @@ I2CDevice::I2CDevice (TwoWire* wire, SemaphoreHandle_t* mutex, uint32_t freq,
 
 I2CDevice::ReturnCode I2CDevice::open ()
 {
-	if (*_mutex == NULL)
+	if (*_mutex == NULL || _wire == NULL)
 	{
 		abort ();
 	}
@@ -49,7 +49,7 @@ I2CDevice::ReturnCode I2CDevice::open ()
 
 I2CDevice::ReturnCode I2CDevice::close ()
 {
-	if (*_mutex == NULL)
+	if (*_mutex == NULL || _wire == NULL)
 	{
 		abort ();
 	}
@@ -66,7 +66,7 @@ I2CDevice::ReturnCode I2CDevice::close ()
 
 I2CDevice::ReturnCode I2CDevice::read (uint8_t* buffer, size_t length)
 {
-	if (*_mutex == NULL)
+	if (*_mutex == NULL || _wire == NULL)
 	{
 		abort ();
 	}
@@ -88,7 +88,7 @@ I2CDevice::ReturnCode I2CDevice::read (uint8_t* buffer, size_t length)
 
 I2CDevice::ReturnCode I2CDevice::write (const uint8_t* buffer, size_t length)
 {
-	if (*_mutex == NULL)
+	if (*_mutex == NULL || _wire == NULL)
 	{
 		abort ();
 	}
