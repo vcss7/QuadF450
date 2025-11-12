@@ -1,3 +1,4 @@
 Diagnostics:
   Suppress:
     - ovl_diff_return_type
+  Add: [-std=c++11]
