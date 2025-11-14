@@ -22,9 +22,14 @@ class Logger : public Print
 {
 public:
     /**
+     * @brief An alias to describe the usb serial baud rate
+     */
+    typedef int usb_serial_baud_t;
+
+    /**
      * @brief Contstructor for Logger class; pass in any interfaces here.
      */
-    Logger (HardwareSerial *uart);
+    Logger (usb_serial_class *usb_serial, usb_serial_baud_t baud);
 
     /**
      * @brief The base write function.
@@ -59,9 +64,9 @@ protected:
 
 private:
     /*
-     * @brief UART interface to write to.
+     * @brief USB serial interface to write to.
      */
-    HardwareSerial *_uart = NULL;
+    usb_serial_class *_usb_serial = NULL;
 };
 
 }  // namespace Q4

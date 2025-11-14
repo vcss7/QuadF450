@@ -10,25 +10,55 @@
 
 using namespace Q4;
 
-Logger::Logger (HardwareSerial *uart)
+Logger::Logger (usb_serial_class *usb_serial, usb_serial_baud_t baud)
 {
-    _uart = uart;
+    if (usb_serial != NULL)
+    {
+        _usb_serial = usb_serial;
+        _usb_serial->begin (baud);
+    }
 }
 
 size_t Logger::write (uint8_t b)
 {
-    return 0;
+    size_t count = 0;
+
+    if (_usb_serial != NULL)
+    {
+        count += _usb_serial->write (b);
+    }
+
+    return count;
 }
 size_t Logger::write (const uint8_t *buffer, size_t size)
 {
-    return 0;
+    size_t count = 0;
+
+    if (_usb_serial != NULL)
+    {
+        count += _usb_serial->write (buffer, size);
+    }
+
+    return count;
 }
 
 int Logger::availableForWrite (void)
 {
-    return 0;
+    int numOpenedInterfaces = 0;
+
+    if (_usb_serial != NULL)
+    {
+        numOpenedInterfaces += 1;
+    }
+
+    return numOpenedInterfaces;
 }
-void flush ()
+void Logger::flush ()
 {
+    if (_usb_serial != NULL)
+    {
+        _usb_serial->flush ();
+    }
+
     return;
 }
