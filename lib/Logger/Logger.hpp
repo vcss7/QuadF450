@@ -24,7 +24,7 @@ public:
     /**
      * @brief An alias to describe the usb serial baud rate
      */
-    typedef int usb_serial_baud_t;
+    typedef int32_t usb_serial_baud_t;
 
     /**
      * @brief Contstructor for Logger class; pass in any interfaces here.

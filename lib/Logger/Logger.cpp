@@ -44,7 +44,7 @@ size_t Logger::write (const uint8_t *buffer, size_t size)
 
 int Logger::availableForWrite (void)
 {
-    int numOpenedInterfaces = 0;
+    size_t numOpenedInterfaces = 0;
 
     if (_usb_serial != NULL)
     {
