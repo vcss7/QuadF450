@@ -50,15 +50,15 @@ public:
     /**
      * @brief Used to read from an I2C device.
      * @param buffer The buffer to write the bytes read.
-     * @param length The number of bytes to read
+     * @param length The number of bytes to read.
      * @return ReturnCode exit status
      */
     ReturnCode read (uint8_t* buffer, size_t length);
 
     /**
-     * @brief Used to read from an I2C device.
-     * @param buffer The buffer to write the bytes read.
-     * @param length The number of bytes to read
+     * @brief Used to write to an I2C device.
+     * @param buffer The buffer to write.
+     * @param length The number of bytes to write.
      * @return ReturnCode exit status
      */
     ReturnCode write (const uint8_t* buffer, size_t length);
@@ -120,6 +120,13 @@ private:
      * this device.
      */
     uint16_t _timeoutMs;
+
+    /**
+     * @brief Used to write one byte to an I2C device.
+     * @param b The byte to write.
+     * @return ReturnCode exit status
+     */
+    ReturnCode write (uint8_t b);
 };
 
 }  // namespace Q4

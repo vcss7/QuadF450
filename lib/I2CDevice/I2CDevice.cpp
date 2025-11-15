@@ -107,3 +107,16 @@ I2CDevice::ReturnCode I2CDevice::write (const uint8_t* buffer, size_t length)
 
     return Q4::I2CDevice::ReturnCode::Success;
 }
+
+I2CDevice::ReturnCode I2CDevice::write (uint8_t b)
+{
+    /* Internal function.. presumably calling function has _mutex */
+    if (_wire == NULL)
+    {
+        abort ();
+    }
+
+    _wire->write (b);
+
+    return Q4::I2CDevice::ReturnCode::Success;
+}
