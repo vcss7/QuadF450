@@ -2,13 +2,29 @@
 #include <math.h>
 
 /*************************************/
+/* IMU Instructions                  */
+/*************************************/
+// Calibrate the Accelerometer
+// Calibrate the Magnetometer
+// Calibrate the Gyroscope
+
+/*************************************/
+/* IMU Conventions/Behavior          */
+/*************************************/
+// Rotation Angle Conventions
+// ====================================
+// Pitch +180 to -180 (clockwise increase)
+// Roll -90 to 90 (forward inclination increase)
+// Yaw 0 to 360 (clockwise increase)
+
+/*************************************/
 /* type definitions                  */
 /*************************************/
 typedef struct EulerAngle
 {
-    float yaw;
     float pitch;
     float roll;
+    float yaw;
 } EulerAngle;
 
 typedef struct Quaternion
